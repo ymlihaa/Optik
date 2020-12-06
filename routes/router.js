@@ -21,7 +21,10 @@ export default function Routes() {
         </ul>
 
         <Switch>
-          <Route path="/exam/:id" component={<App />} />
+          <Route
+            path="/exam/:id"
+            render={(props) => <App start={useParams()} />}
+          />
         </Switch>
       </div>
     </Router>

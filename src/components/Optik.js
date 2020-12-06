@@ -27,7 +27,7 @@ class Optik extends Component {
     };
 
     const items = [];
-    for (let i = 0; i < 40; i++) {
+    for (let i = this.props.startIndex; i < this.props.startIndex + 10; i++) {
       items.push(
         <div className="w-50 d-flex  border ">
           <li
@@ -41,16 +41,7 @@ class Optik extends Component {
         </div>
       );
     }
-    return (
-      <div>
-        {items}
-        <div>
-          <button type="button" class="btn btn-primary">
-            Primary
-          </button>
-        </div>
-      </div>
-    );
+    return <div>{items}</div>;
   }
 }
 
