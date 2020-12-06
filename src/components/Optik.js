@@ -5,9 +5,19 @@ class Optik extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      finish: false,
       result: [],
+      limit: 0,
     };
     this.addClick = this.addClick.bind(this);
+  }
+
+  componentDidMount() {
+    console.log("componentDidmount fırladı :", this.props.startIndex);
+
+    this.setState({
+      limit: this.props.startIndex,
+    });
   }
 
   addClick(index, flag) {
@@ -21,15 +31,25 @@ class Optik extends Component {
   }
 
   render() {
+    const resultArr = [];
+    const finishAlert = (
+      <div class="alert alert-success" role="alert">
+        Congratilations . Your finish exam . <h3>Results:</h3>
+      </div>
+    );
+
     const style = {
       width: "100%",
       listStyleType: "none",
     };
-
+    const limit = this.props.startIndex;
     const items = [];
-    for (let i = this.props.startIndex; i < this.props.startIndex + 10; i++) {
+    console.log("props ile optiğe iletilen:", this.props.startIndex);
+    console.log("limitin değerri:", this.props.startIndex);
+    console.log("-------------------------------------:");
+    for (let i = limit; i < limit + 10; i++) {
       items.push(
-        <div className="w-50 d-flex  border ">
+        <div key={i} className="w-50 d-flex  border ">
           <li
             className={" d-flex justify-content-center rounded p-3 "}
             style={style}
@@ -41,7 +61,7 @@ class Optik extends Component {
         </div>
       );
     }
-    return <div>{items}</div>;
+    return <div>{!this.props.isFinish === true ? items : finishAlert}</div>;
   }
 }
 
