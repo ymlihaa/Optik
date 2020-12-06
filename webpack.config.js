@@ -11,6 +11,7 @@ module.exports = {
   devServer: {
     contentBase: path.join(__dirname, "dist"),
     port: 8000,
+    historyApiFallback: true,
   },
 
   module: {
@@ -18,6 +19,11 @@ module.exports = {
       {
         test: /\.js$/,
         use: "babel-loader",
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
         exclude: /node_modules/,
       },
     ],
