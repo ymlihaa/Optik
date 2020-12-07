@@ -6,6 +6,7 @@ export default class App extends Component {
   constructor() {
     super();
     this.state = {
+      finish: false,
       lessonName: ["Türkçe", "Matematik", "Sosyal Bilgiler", "Fen Bilgileri"],
       alert: false,
       startIndex: 0,
@@ -18,17 +19,28 @@ export default class App extends Component {
 
   componentDidMount() {
     console.log("App comonentinDidmount");
+    let item = this.getStorage();
+
+    console.log("App comonentinDidmountdaki local storage değeri : ", item);
+
+    this.setState({
+      startIndex: item,
+    });
+
+    if (item == null) {
+      this.setStorage(0);
+    }
   }
 
-  componentDidUpdate() {
-    console.log("App comonentinDid Update", this.state.startIndex);
-    this.setStorage(this.state.startIndex);
+  componentDidUpdate(prevState) {
+    if (prevState.startIndex !== this.state.startIndex) {
+      this.setStorage(this.state.startIndex);
+    }
   }
 
   nextPage() {
     if (this.state.startIndex > 20) {
       this.setState({
-        finish: false,
         alert: true,
         finish: true,
       });
@@ -36,9 +48,10 @@ export default class App extends Component {
     }
     this.setState((prevState) => {
       return {
-        startIndex: prevState.startIndex + 10,
+        startIndex: parseInt(prevState.startIndex) + 10,
       };
     });
+    window.location.href = "http://localhost:8000/";
   }
 
   prevPage() {
@@ -51,19 +64,20 @@ export default class App extends Component {
     }
     this.setState((prevState) => {
       return {
-        startIndex: prevState.startIndex - 10,
+        startIndex: parseInt(prevState.startIndex) - 10,
       };
     });
+    window.location.href = "http://localhost:8000/";
   }
 
   setStorage(x) {
-    console.log("setStore ile set edilen :", x);
-    localStorage.setItem("startIndex", x);
+    console.log("app.js/setStore ile set edilen :", x);
+    localStorage.setItem("startIndex", x.toString());
   }
 
   getStorage() {
-    console.log("getStore", localStorage.getItem("startIndex"));
-    return localStorage.getItem("startIndex");
+    console.log("app.js/ getStore", localStorage.getItem("startIndex"));
+    return parseInt(localStorage.getItem("startIndex"));
   }
 
   render() {
@@ -85,6 +99,7 @@ export default class App extends Component {
         <Optik
           startIndex={this.state.startIndex}
           isFinish={this.state.finish}
+          getItem={this.getStorage}
         />
         <div>
           <div className="btn-group" role="group" aria-label="Basic example">
@@ -108,3 +123,8 @@ export default class App extends Component {
     );
   }
 }
+/**TODO:
+ *
+ * LOCAL STORAGE PROBLEMİNİ ÇÖZ
+ *
+ */

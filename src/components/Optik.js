@@ -1,3 +1,4 @@
+import { SignalCellularNullRounded } from "@material-ui/icons";
 import React, { Component } from "react";
 import Button from "./Button";
 
@@ -8,16 +9,30 @@ class Optik extends Component {
       finish: false,
       result: [],
       limit: 0,
+      htmlItems: [],
     };
     this.addClick = this.addClick.bind(this);
   }
 
   componentDidMount() {
-    console.log("componentDidmount fırladı :", this.props.startIndex);
+    let value = this.props.getItem();
+    const tempArr = { ...JSON.parse(localStorage.getItem("resultArr")) };
+    console.log("OPTİK componentDidmount getlocal storage : ", value);
+    if (this.props.isFinish) {
+      this.setState({
+        finish: true,
+      });
+    } else {
+      this.setState({
+        limit: value,
+        result: tempArr,
+      });
+      console.log(this.state.result);
+    }
+  }
 
-    this.setState({
-      limit: this.props.startIndex,
-    });
+  componentDidUpdate() {
+    localStorage.setItem("resultArr", JSON.stringify(this.state.result));
   }
 
   addClick(index, flag) {
@@ -42,27 +57,38 @@ class Optik extends Component {
       width: "100%",
       listStyleType: "none",
     };
-    const limit = this.props.startIndex;
+
+    const limit = this.state.limit;
     const items = [];
-    console.log("props ile optiğe iletilen:", this.props.startIndex);
-    console.log("limitin değerri:", this.props.startIndex);
-    console.log("-------------------------------------:");
-    for (let i = limit; i < limit + 10; i++) {
-      items.push(
-        <div key={i} className="w-50 d-flex  border ">
-          <li
-            className={" d-flex justify-content-center rounded p-3 "}
-            style={style}
-            key={i}
-          >
-            <span>{i + 1}. Soru</span>
-            <Button id={i} addclick={this.addClick} />
-          </li>
-        </div>
-      );
-    }
-    return <div>{!this.props.isFinish === true ? items : finishAlert}</div>;
+    const rArr = { ...JSON.parse(localStorage.getItem("resultArr")) };
+    for (let i = limit; i < limit + 10; i++)
+      [
+        items.push(
+          <div key={i} className="w-50 d-flex  border ">
+            <li
+              className={" d-flex justify-content-center rounded p-3 "}
+              style={style}
+              key={i}
+            >
+              <span>{i + 1}. Soru</span>
+              <Button
+                id={i}
+                addclick={this.addClick}
+                selectRadio={rArr[i] !== "" ? rArr[i] : ""}
+              />
+            </li>
+          </div>
+        ),
+      ];
+
+    return <div>{!this.state.finish === true ? items : finishAlert}</div>;
   }
 }
 
 export default Optik;
+
+/**TODO:
+ *
+ * LOCAL STORAGE PROBLEMİNİ ÇÖZ
+ *
+ */

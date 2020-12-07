@@ -7,7 +7,7 @@ import { Flag } from "@material-ui/icons";
 
 export default function RadioButtons(props) {
   let length = props.length;
-  const [selectedValue, setSelectedValue] = React.useState("");
+  const [selectedValue, setSelectedValue] = React.useState(props.selectRadio);
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
