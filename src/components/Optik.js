@@ -73,6 +73,20 @@ class Optik extends Component {
     const questionListStyle = {
       width: "100%",
       listStyleType: "none",
+      display: " flex",
+      justifyContent: "center",
+      alignSelf: "center",
+    };
+
+    const s1 = {
+      width: "100%",
+    };
+    const s2 = {
+      display: "flex",
+      alignContent: "center",
+      justifyContent: "center",
+      fontWeight: "bold",
+      fontSize: "1em",
     };
 
     // App componentinden gelen startIndex bilgisinden başlayıp radio buttonlarımızı
@@ -82,22 +96,16 @@ class Optik extends Component {
         // elementimizi her iterasyonda questionList e push luyoruz
 
         questionList.push(
-          <div key={i} className="w-50 d-flex  border ">
-            <li
-              className={
-                " d-flex justify-content-sm-center align-self-center ounded p-3 "
-              }
-              style={questionListStyle}
-              key={i}
-            >
-              <span>{i + 1}. Soru</span>
+          <>
+            <span style={s2}>{i + 1}. Soru</span>
+            <li className=" border rounded" style={questionListStyle} key={i}>
               <Button
                 id={i}
                 addclick={this.addClick}
                 selectRadio={localResultArr[i] !== "" ? localResultArr[i] : ""}
               />
             </li>
-          </div>
+          </>
         ),
       ];
 

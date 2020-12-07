@@ -80,7 +80,26 @@ export default class App extends Component {
     return parseInt(localStorage.getItem("startIndex"));
   }
 
+  finishExam() {
+    let result = { ...JSON.parse(localStorage.getItem("resultArr")) };
+    console.log(result);
+  }
+
   render() {
+    const Appwrapper = {
+      width: "100%",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifyContent: "center",
+    };
+
+    const cardshadow = {
+      background: " #fff",
+      borderRadius: " 2px",
+      boxShadow: " 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)",
+    };
+
     const alert = (
       <div className="alert alert-warning w-50" role="alert">
         Bu testi bitirdiniz .{" "}
@@ -91,18 +110,34 @@ export default class App extends Component {
       </div>
     );
     return (
-      <div className="w-100 d-flex  flex-column  align-content-center justify-content-center">
+      <div style={Appwrapper} className="mx-auto p-2">
         <h3>{this.state.lessonName[0]}</h3>
 
         {this.state.alert && alert}
-
-        <Optik
-          startIndex={this.state.startIndex}
-          isFinish={this.state.finish}
-          getItem={this.getStorage}
-        />
-        <div>
-          <div className="btn-group" role="group" aria-label="Basic example">
+        <div
+          style={cardshadow}
+          className="
+          d-flex 
+          justify-content-center
+          align-content-center
+          mx-auto
+          w-100
+          card 
+          p-5"
+        >
+          <Optik
+            startIndex={this.state.startIndex}
+            isFinish={this.state.finish}
+            getItem={this.getStorage}
+          />
+          <div
+            className="btn-group  d-flex 
+            justify-content-center
+            align-items-center
+            pt-3"
+            role="group"
+            aria-label="Basic example"
+          >
             <button
               type="button"
               className="btn btn-primary  m-1"
@@ -116,6 +151,13 @@ export default class App extends Component {
               onClick={this.nextPage}
             >
               Sonraki Sayfa
+            </button>
+            <button
+              onClick={this.finishExam}
+              type="button"
+              class="btn btn-danger  m-1"
+            >
+              Sınavı Bitir
             </button>
           </div>
         </div>

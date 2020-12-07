@@ -17,7 +17,7 @@ export default function RadioButtons(props) {
   };
 
   return (
-    <>
+    <div className={"w-50 d-flex justify-content-center"}>
       <Radio
         checked={selectedValue === "a"}
         onChange={handleChange}
@@ -54,6 +54,6 @@ export default function RadioButtons(props) {
         name="radio-button-demo"
         inputProps={{ "aria-label": "F" }}
       />
-    </>
+    </div>
   );
 }
