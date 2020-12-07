@@ -91,7 +91,7 @@ export default class App extends Component {
       </div>
     );
     return (
-      <div className="w-100 d-flex  flex-column justify-content-center">
+      <div className="w-100 d-flex  flex-column  align-content-center justify-content-center">
         <h3>{this.state.lessonName[0]}</h3>
 
         {this.state.alert && alert}
