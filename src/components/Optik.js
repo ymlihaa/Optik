@@ -8,17 +8,19 @@ class Optik extends Component {
     this.state = {
       finish: false,
       result: [],
-      limit: 0,
+      startIndex: 0,
       htmlItems: [],
     };
     this.addClick = this.addClick.bind(this);
+    this.nextPage = this.nextPage.bind(this);
+    this.prevPage = this.prevPage.bind(this);
   }
 
   componentDidMount() {
     let value = this.props.getItem();
     const tempArr = { ...JSON.parse(localStorage.getItem("resultArr")) };
 
-    //  sayfayı yüklerken
+    // sayfayı yüklerken
     // Eğerki App componentinden gelen propsun içindeki isFinish datası true ise
     // state deki finish i true yap
     // değilse state deki limit değerini ve localStorage ' daki resulArr ı güncelle
@@ -53,6 +55,32 @@ class Optik extends Component {
     });
   }
 
+  nextPage() {
+    if (this.state.startIndex > 20) {
+      this.props.setAlertTrue();
+      return;
+    }
+    this.setState((prevState) => {
+      return {
+        startIndex: parseInt(prevState.startIndex) + 10,
+      };
+    });
+  }
+
+  prevPage() {
+    console.log("click", this.state.startIndex);
+    if (this.state.startIndex < 10) {
+      this.setState({
+        alert: true,
+      });
+      return;
+    }
+    this.setState((prevState) => {
+      return {
+        startIndex: parseInt(prevState.startIndex) - 10,
+      };
+    });
+  }
   render() {
     // İşaretlenin her bir soruyu local storage den getiriyor
     const localResultArr = {
@@ -91,7 +119,7 @@ class Optik extends Component {
 
     // App componentinden gelen startIndex bilgisinden başlayıp radio buttonlarımızı
     // 10 defa oluşturacak döngümüz
-    for (let i = this.state.limit; i < this.state.limit + 10; i++)
+    for (let i = this.state.startIndex; i < this.state.startIndex + 10; i++)
       [
         // elementimizi her iterasyonda questionList e push luyoruz
 
@@ -113,7 +141,39 @@ class Optik extends Component {
       // App componentinden sınav tamamen bittiğinde finish bilgisi gönderilecek
       // Eğer sınav tamamen bittiyse finishAlert i çalıştır
       // Bitmediyse radio buttonları döndür
-      <div>{!this.state.finish === true ? questionList : finishAlert}</div>
+      <div>
+        {!this.state.finish === true ? questionList : finishAlert}
+        <div
+          className="btn-group  d-flex 
+            justify-content-center
+            align-items-center
+            pt-3"
+          role="group"
+          aria-label="Basic example"
+        >
+          <button
+            type="button"
+            className="btn btn-primary  m-1"
+            onClick={this.prevPage}
+          >
+            Önceki Sayfa
+          </button>
+          <button
+            type="button"
+            className="btn btn-success m-1"
+            onClick={this.nextPage}
+          >
+            Sonraki Sayfa
+          </button>
+          <button
+            onClick={this.finishExam}
+            type="button"
+            class="btn btn-danger  m-1"
+          >
+            Sınavı Bitir
+          </button>
+        </div>
+      </div>
     );
   }
 }
@@ -123,5 +183,9 @@ export default Optik;
 /**TODO:
  *
  * LOCAL STORAGE PROBLEMİNİ ÇÖZ
+ *
+ * pagination problemini çöz
+ * limit değerlerini propstan alma burada lifecycle içerisinde hallet
+ * sayfayı yenilemeden pagination işini halletmenin bir yolunu bul .
  *
  */

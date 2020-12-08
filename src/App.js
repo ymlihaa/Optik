@@ -11,10 +11,10 @@ export default class App extends Component {
       alert: false,
       startIndex: 0,
     };
-    this.nextPage = this.nextPage.bind(this);
-    this.prevPage = this.prevPage.bind(this);
+
     this.setStorage = this.setStorage.bind(this);
     this.getStorage = this.getStorage.bind(this);
+    this.setAlertTrue = this.setAlertTrue.bind(this);
   }
 
   componentDidMount() {
@@ -38,38 +38,6 @@ export default class App extends Component {
     }
   }
 
-  nextPage() {
-    if (this.state.startIndex > 20) {
-      this.setState({
-        alert: true,
-        finish: true,
-      });
-      return;
-    }
-    this.setState((prevState) => {
-      return {
-        startIndex: parseInt(prevState.startIndex) + 10,
-      };
-    });
-    window.location.href = "http://localhost:8000/";
-  }
-
-  prevPage() {
-    console.log("click", this.state.startIndex);
-    if (this.state.startIndex < 10) {
-      this.setState({
-        alert: true,
-      });
-      return;
-    }
-    this.setState((prevState) => {
-      return {
-        startIndex: parseInt(prevState.startIndex) - 10,
-      };
-    });
-    window.location.href = "http://localhost:8000/";
-  }
-
   setStorage(x) {
     console.log("app.js/setStore ile set edilen :", x);
     localStorage.setItem("startIndex", x.toString());
@@ -83,6 +51,12 @@ export default class App extends Component {
   finishExam() {
     let result = { ...JSON.parse(localStorage.getItem("resultArr")) };
     console.log(result);
+  }
+
+  setAlertTrue() {
+    this.setState({
+      alert: true,
+    });
   }
 
   render() {
@@ -109,6 +83,7 @@ export default class App extends Component {
         Başarılar...
       </div>
     );
+
     return (
       <div style={Appwrapper} className="mx-auto p-2">
         <h3>{this.state.lessonName[0]}</h3>
@@ -129,37 +104,8 @@ export default class App extends Component {
             startIndex={this.state.startIndex}
             isFinish={this.state.finish}
             getItem={this.getStorage}
+            setAlertTrue={this.setAlertTrue}
           />
-          <div
-            className="btn-group  d-flex 
-            justify-content-center
-            align-items-center
-            pt-3"
-            role="group"
-            aria-label="Basic example"
-          >
-            <button
-              type="button"
-              className="btn btn-primary  m-1"
-              onClick={this.prevPage}
-            >
-              Önceki Sayfa
-            </button>
-            <button
-              type="button"
-              className="btn btn-success m-1"
-              onClick={this.nextPage}
-            >
-              Sonraki Sayfa
-            </button>
-            <button
-              onClick={this.finishExam}
-              type="button"
-              class="btn btn-danger  m-1"
-            >
-              Sınavı Bitir
-            </button>
-          </div>
         </div>
       </div>
     );
