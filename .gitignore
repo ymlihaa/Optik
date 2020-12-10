@@ -1,1 +1,5 @@
 node_modules
+/src/Pagination.js
+/src/components/BaseRegister.js
+/src/components/Login.js
+/src/components/SignIn.js

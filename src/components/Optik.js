@@ -6,10 +6,8 @@ class Optik extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      finish: false,
       result: [],
       startIndex: 0,
-      htmlItems: [],
     };
     this.addClick = this.addClick.bind(this);
     this.nextPage = this.nextPage.bind(this);
@@ -17,25 +15,18 @@ class Optik extends Component {
   }
 
   componentDidMount() {
-    let value = this.props.getItem();
     const tempArr = { ...JSON.parse(localStorage.getItem("resultArr")) };
 
+    // console.log("component-value", value);
     // sayfayı yüklerken
     // Eğerki App componentinden gelen propsun içindeki isFinish datası true ise
     // state deki finish i true yap
     // değilse state deki limit değerini ve localStorage ' daki resulArr ı güncelle
 
-    if (this.props.isFinish) {
-      this.setState({
-        finish: true,
-      });
-    } else {
-      this.setState({
-        limit: value,
-        result: tempArr,
-      });
-      console.log(this.state.result);
-    }
+    this.setState({
+      result: tempArr,
+    });
+    console.log(this.state.result);
   }
 
   // Componentte bir değişiklik meydana geldiğinde
@@ -57,7 +48,7 @@ class Optik extends Component {
 
   nextPage() {
     if (this.state.startIndex > 20) {
-      this.props.setAlertTrue();
+      this.props.setAlertType("upperAlert");
       return;
     }
     this.setState((prevState) => {
@@ -70,6 +61,8 @@ class Optik extends Component {
   prevPage() {
     console.log("click", this.state.startIndex);
     if (this.state.startIndex < 10) {
+      this.props.setAlertType("lowerAlert");
+
       this.setState({
         alert: true,
       });

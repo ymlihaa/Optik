@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Alerts from "./components/ExamAlert";
 import Header from "./components/Header";
 import Optik from "./components/Optik";
 
@@ -8,29 +9,27 @@ export default class App extends Component {
     this.state = {
       finish: false,
       lessonName: ["Türkçe", "Matematik", "Sosyal Bilgiler", "Fen Bilgileri"],
-      alert: false,
-      startIndex: 0,
+      // startIndex: 0,
+      alertType: "",
     };
 
     this.setStorage = this.setStorage.bind(this);
     this.getStorage = this.getStorage.bind(this);
-    this.setAlertTrue = this.setAlertTrue.bind(this);
+    this.setAlertType = this.setAlertType.bind(this);
+    this.count = 0;
   }
 
-  componentDidMount() {
-    console.log("App comonentinDidmount");
-    let item = this.getStorage();
-
-    console.log("App comonentinDidmountdaki local storage değeri : ", item);
-
-    this.setState({
-      startIndex: item,
-    });
-
-    if (item == null) {
-      this.setStorage(0);
-    }
-  }
+  // componentDidMount() {
+  //   // if (item == null) {
+  //   //   localStorage.setItem("startIndex", "0");
+  //   // }
+  //   // this.setState({
+  //   //   startIndex: item,
+  //   // });
+  //   // if (item == null) {
+  //   //   this.setStorage(0);
+  //   // }
+  // }
 
   componentDidUpdate(prevState) {
     if (prevState.startIndex !== this.state.startIndex) {
@@ -50,12 +49,17 @@ export default class App extends Component {
 
   finishExam() {
     let result = { ...JSON.parse(localStorage.getItem("resultArr")) };
+    this.setAlertType("finishAlert");
     console.log(result);
   }
 
-  setAlertTrue() {
+  setAlertType(type) {
+    console.log("setAlertType :", type);
+    console.log(document.documentElement.scrollTop);
+
+    document.documentElement.scrollTop = 0;
     this.setState({
-      alert: true,
+      alertType: type.toString(),
     });
   }
 
@@ -73,22 +77,12 @@ export default class App extends Component {
       borderRadius: " 2px",
       boxShadow: " 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22)",
     };
-
-    const alert = (
-      <div className="alert alert-warning w-50" role="alert">
-        Bu testi bitirdiniz .{" "}
-        <a href="#" className="alert-link">
-          Buradan bir sonraki derse geçebilirsiniz.
-        </a>
-        Başarılar...
-      </div>
-    );
+    const element = <Alerts alertType={this.state.alertType} />;
 
     return (
       <div style={Appwrapper} className="mx-auto p-2">
         <h3>{this.state.lessonName[0]}</h3>
-
-        {this.state.alert && alert}
+        {element !== null && element}
         <div
           style={cardshadow}
           className="
@@ -104,7 +98,7 @@ export default class App extends Component {
             startIndex={this.state.startIndex}
             isFinish={this.state.finish}
             getItem={this.getStorage}
-            setAlertTrue={this.setAlertTrue}
+            setAlertType={this.setAlertType}
           />
         </div>
       </div>
